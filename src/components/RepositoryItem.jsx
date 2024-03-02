@@ -1,4 +1,5 @@
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   tinyLogo: {
