@@ -1,6 +1,6 @@
 import { FlatList, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
-import useRepositories from '../hooks/useRepositories';
+// import useRepositories from '../hooks/useRepositories';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import Text from './Text';
@@ -17,7 +17,6 @@ const RepositoryList = () => {
    //const { repositories } = useRepositories();
 
   const { data, error, loading } = useQuery(GET_REPOSITORIES);
-  console.log("kissa");
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
@@ -28,7 +27,6 @@ const RepositoryList = () => {
   // console.log(data);
 
   const repositories = data.repositories.edges.map(e => e.node);
-  console.log(repositories);
 
     // // Get the nodes from the edges array
     // const repositoryNodes = repositories
