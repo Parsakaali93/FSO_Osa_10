@@ -6,6 +6,7 @@ const useRepositories = () => {
 
   const fetchRepositories = async () => {
     setLoading(true);
+    console.log("ksis");
 
     // Replace the IP address part with your own IP address!
     const response = await fetch('http://192.168.10.237:5000/api/repositories');

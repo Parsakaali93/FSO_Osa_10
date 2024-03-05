@@ -19,7 +19,7 @@ const RepositoryList = () => {
   const { data, error, loading } = useQuery(GET_REPOSITORIES);
 
   if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
+  if (error) return <Text>Error fetching repositories: {error.message}</Text>;
   if (!data || !data.repositories || !data.repositories.edges) {
     return <Text>No data found</Text>;
   }
