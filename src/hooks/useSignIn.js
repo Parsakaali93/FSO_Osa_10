@@ -1,26 +1,25 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { ApolloClient, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { SIGN_IN } from '../graphql/mutations';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useNavigate } from 'react-router-native';
-import { ME } from '../graphql/queries';
 
 const useSignIn = () => {
     const authStorage = useAuthStorage();
     const navigate = useNavigate();
-
+    const apolloClient = useApolloClient();
     const [mutate, result] = useMutation(SIGN_IN);
 
     const signIn = async ({ username, password }) => {
         try {
             const response = await mutate({ variables: { username, password } });
-            console.log("response ", response);
+            // console.log("response ", response);
             const token = response.data.authenticate.accessToken;
 
             console.log("setting user token in local storage ", token);
             await authStorage.setAccessToken(token);
-
-            const t = await authStorage.getAccessToken()
-            console.log("current value in local storage: ", t);
+            apolloClient.resetStore();
+            //const t = await authStorage.getAccessToken()
+            //console.log("current value in local storage: ", t);
             navigate("/");
             return response;
         } 

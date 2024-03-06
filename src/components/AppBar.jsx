@@ -5,8 +5,9 @@ import { ME } from '../graphql/queries';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useQuery } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import useSignIn from '../hooks/useSignIn';
+import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,22 +29,11 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
-  const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+  console.log("App bar render");
 
-  const { data, loading } = useQuery(ME);
-
-  useEffect(() => {
-    console.log("useeffect");
-
-    if (!loading && data && data.me) {
-      setIsUserSignedIn(true);
-    } else {
-      setIsUserSignedIn(false);
-    }
-  }, []);
-
-  //console.log("data", data);
-  //console.log("is user signed in: ", isUserSignedIn);
+  const { data } = useQuery(ME);
+  console.log("data", data);
+  const isUserSignedIn = (data && data.me) ? true:false
 
   const signOut = async () => {
       console.log("Removing access token");
