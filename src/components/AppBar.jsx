@@ -5,9 +5,6 @@ import { ME } from '../graphql/queries';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useQuery } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
-import { useEffect, useState, useContext } from 'react';
-import useSignIn from '../hooks/useSignIn';
-import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const styles = StyleSheet.create({
   container: {

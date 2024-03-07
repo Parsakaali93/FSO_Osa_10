@@ -46,18 +46,23 @@ const styles = StyleSheet.create({
   }
 });
 
-function formatNumber(number) {
-  if (number >= 1000) {
-      const formattedNumber = (number / 1000).toFixed(2);
-      return `${formattedNumber}k`;
-  } else {
-      return number.toString();
-  }
+export function formatNumber(number) {
+    if(typeof number === 'number')
+    {
+      if (number >= 1000) {
+          const formattedNumber = (number / 1000).toFixed(2);
+          return `${formattedNumber}k`;
+      } else {
+          return number.toString();
+      }
+    }
+    else
+      return '';
 }
 
 const RepositoryItem = ({repository}) => {
     return (
-      <View style={{backgroundColor:"white", padding: 20}}>
+      <View testID='repositoryItem' style={{backgroundColor:"white", padding: 20}}>
         <View style={styles.creatorInfoAll}>
         <Image style={styles.tinyLogo} source={{uri: repository.ownerAvatarUrl}}></Image>
           <View style={styles.creatorInfoText}>
