@@ -1,5 +1,7 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable, TouchableOpacity, Linking } from 'react-native';
 import Text from './Text';
+import { useNavigate } from 'react-router-native';
+import { Link } from 'react-router-native';
 
 const styles = StyleSheet.create({
   tinyLogo: {
@@ -43,6 +45,24 @@ const styles = StyleSheet.create({
 
   repoLanguageText: {
     color: "white",
+  },
+
+  linkButton:{
+    backgroundColor: "#222b2e",
+    width:"60%",
+    marginHorizontal: "auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 10
+  },
+
+  linkContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100
   }
 });
 
@@ -60,7 +80,17 @@ export function formatNumber(number) {
       return '';
 }
 
-const RepositoryItem = ({repository}) => {
+const RepositoryItem = ({repository, singleRepoView}) => {
+  
+  const handlePress = async () => {
+    console.log(repository.url)
+    // Open the GitHub page using Expo Linking
+    await Linking.openURL(repository.url);
+  };
+
+
+  console.log("repoid", repository.id)
+  const renderContent = () => {
     return (
       <View testID='repositoryItem' style={{backgroundColor:"white", padding: 20}}>
         <View style={styles.creatorInfoAll}>
@@ -87,8 +117,20 @@ const RepositoryItem = ({repository}) => {
             <Text style={{fontWeight:"bold"}}>{repository.reviewCount}</Text><Text>review count</Text>
           </View>
         </View>
+          {singleRepoView && <View style={styles.linkContainer}>
+          <Pressable onPress={handlePress} style={styles.linkButton}><Text style={{fontSize: 20, color:"white"}}>Open in GitHub</Text></Pressable>
+        </View>}
       </View>
     );
   };
+
+  return singleRepoView ? (
+    renderContent()
+  ) : (
+    <Link to={`/repos/${repository.id}`}>
+      {renderContent()}
+    </Link>
+  );
+};
 
 export default RepositoryItem

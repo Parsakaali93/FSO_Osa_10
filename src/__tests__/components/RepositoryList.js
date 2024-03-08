@@ -49,10 +49,10 @@ describe('RepositoryList', () => {
         };
   
         const repos = repositories.edges.map(e => e.node);
-
         render(<RepositoryList repositories={repos}/>);
+
         const repositoryItems = screen.getAllByTestId('repositoryItem');
-        //console.log(repositoryItems);
+
         const [firstRepositoryItem, secondRepositoryItem] = repositoryItems;
 
         expect(firstRepositoryItem).toHaveTextContent(repositories.edges[0].node.fullName);
@@ -75,22 +75,6 @@ describe('RepositoryList', () => {
 
         expect(firstRepositoryItem).toHaveTextContent(formatNumber(repositories.edges[0].node.reviewCount));
         expect(secondRepositoryItem).toHaveTextContent(formatNumber(repositories.edges[1].node.reviewCount));
-        
-        // repositories.edges.forEach(repository => {
-        //     expect(screen.getByText(repository.node.fullName)).toBeInTheDocument();
-        //     expect(screen.getByText(repository.node.description)).toBeInTheDocument();
-        //     expect(screen.getByText(repository.node.language)).toBeInTheDocument();
-        //     expect(screen.getByText(repository.node.forksCount.toString())).toBeInTheDocument();
-        //     expect(screen.getByText(repository.node.stargazersCount.toString())).toBeInTheDocument();
-        //     expect(screen.getByText(repository.node.ratingAverage.toString())).toBeInTheDocument();
-        //     expect(screen.getByText(repository.node.reviewCount.toString())).toBeInTheDocument();
-        //   });
-
-        //expect(firstRepositoryItem).toHaveTextContent(repositories.edges[0].node.fullName);
-        //expect(firstRepositoryItem).toHaveTextContent(repositories.edges[0].node.fullName);
-
-        // Add your test code here
-
       });
     });
   });

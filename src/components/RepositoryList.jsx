@@ -17,7 +17,7 @@ const RepositoryList = ({repositories}) => {
     <FlatList style={{backgroundColor:"#aff4fe"}}
       data={repositories}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={({item}) => <RepositoryItem testID='repositoryItem' repository={item} />}
+      renderItem={({item}) => <RepositoryItem repository={item} singleRepoView={false} />}
     />
   );
 };
