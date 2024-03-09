@@ -7,6 +7,7 @@ import SignIn from './SignIn';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import SingleRepoView from './SingleRepoView';
+import ReviewForm from './ReviewForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +35,7 @@ const Main = () => {
            <Route path="/" element={<RepositoryList repositories={repositories} />} />
            <Route path="/signin" element={<SignIn />} />
            <Route path="/repos/:id" element={<SingleRepoView />} />
+           <Route path="/review" element={<ReviewForm />} />
            {/*The last Route inside the Routes is for catching paths that don't match
            any previously defined path. In this case, we want to navigate to the home view.*/}
            <Route path="*" element={<Navigate to="/" replace />} />
