@@ -51,7 +51,7 @@ const AppBar = () => {
           <Pressable><Link to="/"><Text style={styles.navButton}>Repositories</Text></Link></Pressable>
           {!isUserSignedIn && <Pressable><Link to="/signin"><Text style={styles.navButton}>Sign In</Text></Link></Pressable>}
           {isUserSignedIn && <Pressable onPress={signOut}><Text style={styles.navButton}>Sign Out</Text></Pressable>}
-        <Pressable><Link to="/review"><Text style={styles.navButton}>Review</Text></Link></Pressable>
+          {isUserSignedIn && <Pressable><Link to="/review"><Text style={styles.navButton}>Review</Text></Link></Pressable>}
     </ScrollView>
   </View>
   

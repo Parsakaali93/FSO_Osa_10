@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
-  const { data, error, loading } = useQuery(GET_REPOSITORIES);
+  const { data, error, loading } = useQuery(GET_REPOSITORIES, {fetchPolicy: 'network-only' });
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error fetching repositories: {error.message}</Text>;

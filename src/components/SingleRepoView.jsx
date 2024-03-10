@@ -16,7 +16,7 @@ const SingleRepoView = () => {
     const { id } = useParams();
     console.log("id ", id)
 
-    const { data, error, loading } = useQuery(GET_SINGLE_REPOSITORY, { variables: { repoID: id } });
+    const { data, error, loading } = useQuery(GET_SINGLE_REPOSITORY, { fetchPolicy: 'cache-and-network', variables: { repoID: id } });
     
     if (loading) return <Text>Loading...</Text>;
     if (error) return <Text>Error fetching repositories: {error.message}</Text>;

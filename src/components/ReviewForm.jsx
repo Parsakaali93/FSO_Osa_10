@@ -2,6 +2,10 @@ import Text from './Text';
 import { View, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useMutation } from '@apollo/client';
+import { LEAVE_REVIEW } from '../graphql/mutations';
+import { useNavigate } from 'react-router-native';
+import { GET_REPOSITORIES } from '../graphql/queries';
 
 const styles = StyleSheet.create({
     container: {
@@ -58,7 +62,32 @@ const initialValues = {
         .string()
     });
 
-const ReviewForm = ({onSubmit}) => {
+const ReviewForm = () => {
+  const [mutate, result] = useMutation(LEAVE_REVIEW);
+  const navigate = useNavigate();
+
+  const onSubmit = async () => {
+    const review = {
+      ownerName: formik.values.repoOwnerName,
+      repositoryName: formik.values.repoName,
+      rating: Number(formik.values.rating),
+      text: formik.values.review
+    };
+
+    console.log("review", review);
+
+    const response = await mutate({ variables: {
+        ownerName: review.ownerName,
+        repositoryName: review.repositoryName,
+        rating: review.rating,
+        text: review.text
+      },
+      refetchQueries: [{ query: GET_REPOSITORIES }]
+    });
+    console.log(response);
+    navigate(`/repos/${response.data.createReview.repositoryId}`)
+  }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
