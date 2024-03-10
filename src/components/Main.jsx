@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import SingleRepoView from './SingleRepoView';
 import ReviewForm from './ReviewForm';
+import RegisterForm from './RegisterForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +35,7 @@ const Main = () => {
       <Routes>
            <Route path="/" element={<RepositoryList repositories={repositories} />} />
            <Route path="/signin" element={<SignIn />} />
+           <Route path="/register" element={<RegisterForm />} />
            <Route path="/repos/:id" element={<SingleRepoView />} />
            <Route path="/review" element={<ReviewForm />} />
            {/*The last Route inside the Routes is for catching paths that don't match
