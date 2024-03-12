@@ -1,10 +1,11 @@
-import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { FlatList, View, StyleSheet, Text, TextInput } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 // import useRepositories from '../hooks/useRepositories';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,10 +16,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const SortSelector = ({onChange, order}) => {
-
+const SortSelector = ({onChange, order, filter, onFilterChange}) => {
   return (
     <View style={styles.sortSelector}>
+      <View style={{display: "flex", alignItems: "center", marginVertical: 20}}>
+        <TextInput onChangeText={onFilterChange} placeholder='Filter Repositories' value={filter} style={{borderRadius: 10, padding:10, height: 50, backgroundColor:"white", width: "90%"}}>
+        </TextInput>
+      </View>
+
       <Picker
         selectedValue={order.pickerDisplay}
         
@@ -30,6 +35,7 @@ const SortSelector = ({onChange, order}) => {
         <Picker.Item label="Highest Rated Repositories" value="highest" />
         <Picker.Item label="Lowest Rated Repositories" value="lowest" />
       </Picker>
+      
     </View>
   )
 }
@@ -37,8 +43,9 @@ const SortSelector = ({onChange, order}) => {
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
-  
   const [selectedOrder, setSelectedOrder] = useState({pickerDisplay: "Latest Repositories"});
+  const [filter, setFilter] = useState("");
+  const [filterDebounced] = useDebounce(filter, 800);
 
   const handleOrderChange = (itemValue) => {
     switch(itemValue)
@@ -55,10 +62,13 @@ const RepositoryList = () => {
           setSelectedOrder({criteria: "RATING_AVERAGE", direction: "ASC", pickerDisplay: "lowest"});
           break;
     }
-    
   };
 
-  const { data, error, loading } = useQuery(GET_REPOSITORIES, {variables: { orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }, fetchPolicy: 'network-only' });
+  const handleFilterChange = (itemValue) => {
+       setFilter(itemValue);
+  };
+
+  const { data, error, loading } = useQuery(GET_REPOSITORIES, {variables: { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }, fetchPolicy: 'network-only' });
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error fetching repositories: {error.message}</Text>;
@@ -71,7 +81,7 @@ const RepositoryList = () => {
   return (
     <FlatList style={{backgroundColor:"#aff4fe"}}
       data={repositories}
-      ListHeaderComponent={() => <SortSelector onChange={handleOrderChange} order={selectedOrder}/>}
+      ListHeaderComponent={<SortSelector onFilterChange={handleFilterChange} filter={filter} onChange={handleOrderChange} order={selectedOrder}/>}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({item}) => <RepositoryItem repository={item} singleRepoView={false} />}
     />
