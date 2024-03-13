@@ -67,7 +67,7 @@ const initialValues = {
 
 const RegisterForm = () => {
     const [mutate] = useMutation(REGISTER);
-    const [signIn, result] = useSignIn();
+    const [signIn] = useSignIn();
 
     const navigate = useNavigate();
 
@@ -89,7 +89,7 @@ const RegisterForm = () => {
             });
 
             if(response){
-                const res = await signIn({ username: user.username, password: user.password });
+                await signIn({ username: user.username, password: user.password });
                 navigate(`/`);
             }
         }

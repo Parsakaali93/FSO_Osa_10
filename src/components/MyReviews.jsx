@@ -1,15 +1,8 @@
-import { StyleSheet, Text, FlatList } from 'react-native';
+import { Text, FlatList } from 'react-native';
 // import useRepositories from '../hooks/useRepositories';
 import { ME } from '../graphql/queries';
-import { gql, useQuery } from '@apollo/client';
-import { useParams } from 'react-router-native';
+import { useQuery } from '@apollo/client';
 import ReviewItem from './ReviewItem';
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  }
-});
 
 const MyReviews = () => {
     const { data, error, loading } = useQuery(ME, { variables: {includeReviews: true} });

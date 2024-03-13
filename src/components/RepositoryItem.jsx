@@ -2,6 +2,7 @@ import { View, Image, StyleSheet, Pressable, TouchableOpacity, Linking } from 'r
 import Text from './Text';
 import { useNavigate } from 'react-router-native';
 import { Link } from 'react-router-native';
+import { DELETE_REVIEW } from '../graphql/mutations';
 
 const styles = StyleSheet.create({
   tinyLogo: {

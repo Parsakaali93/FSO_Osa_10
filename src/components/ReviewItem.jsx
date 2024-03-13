@@ -1,7 +1,14 @@
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Text from './Text';
-import { Button } from 'react-native';  
+import { Button } from 'react-native';
+import { useNavigate } from 'react-router-native';
+import { DELETE_REVIEW } from '../graphql/mutations';
+import { useMutation } from '@apollo/client';
+import { ME } from '../graphql/queries';
+
 const ReviewItem = ({review, showRepoName}) => {
+    const navigate = useNavigate();
+    const [mutate, result] = useMutation(DELETE_REVIEW);
 
     const styles = StyleSheet.create({
         ratingCircle: {
@@ -79,6 +86,18 @@ const ReviewItem = ({review, showRepoName}) => {
         return baseFontSize;
     };
 
+    const NavigateToRepo = () => {
+        navigate(`/repos/${review.repository.id}`)
+    }
+
+    const DeleteRepo = async () => {
+        const response = await mutate({ variables: {
+            id: review.id
+          },
+          refetchQueries: [{ query: ME, variables: {includeReviews: true} }]
+        });
+    }
+
   return (
     <View style={{marginVertical: 5, padding: 20, backgroundColor: '#defafd'}}>
         <View style={styles.flexRow}>
@@ -97,8 +116,8 @@ const ReviewItem = ({review, showRepoName}) => {
         </View>
         {showRepoName &&
                 <View style={styles.buttonContainer}>
-                    <Button title="View Repository"><Text>View Repository</Text></Button>
-                    <Button color="darkred" title="Delete Review"><Text>Delete Review</Text></Button>
+                    <Button onPress={NavigateToRepo} title="View Repository"><Text>View Repository</Text></Button>
+                    <Button onPress={DeleteRepo} color="darkred" title="Delete Review"><Text>Delete Review</Text></Button>
                 </View>
             }
     </View>
