@@ -1,7 +1,7 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import Text from './Text';
-  
-const ReviewItem = ({review}) => {
+import { Button } from 'react-native';  
+const ReviewItem = ({review, showRepoName}) => {
 
     const styles = StyleSheet.create({
         ratingCircle: {
@@ -44,6 +44,22 @@ const ReviewItem = ({review}) => {
 
         text:{
 
+        },
+
+        repoName:{
+            fontWeight: 'bold'
+        },
+
+        buttonContainer:{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: 40,
+            marginBottom: 20,
+            justifyContent: 'space-around'
+        },
+
+        deleteButton:{
+            color:'red'
         }
         });
 
@@ -64,19 +80,27 @@ const ReviewItem = ({review}) => {
     };
 
   return (
-    <View style={{marginVertical: 20, padding: 20, backgroundColor: '#defafd'}}>
+    <View style={{marginVertical: 5, padding: 20, backgroundColor: '#defafd'}}>
         <View style={styles.flexRow}>
             <View style={styles.ratingCircle}>
                 <Text style={[styles.rating, { fontSize: calculateFontSize(review.rating) }]}>{review.rating}</Text>
             </View>
             <View style={styles.flexColumn}>
-                <Text style={styles.username}>{review.user.username}</Text>
+                {showRepoName && <Text style={styles.repoName}>{review.repository.fullName}</Text>}
+                {!showRepoName && <Text style={styles.username}>{review.user.username}</Text>}
                 <Text style={styles.createdAt}>{formatDate(review.createdAt)}</Text>
                 <View style={styles.textContainer}>
                         <Text style={styles.text}>{review.text}</Text>
                 </View>
             </View>
+       
         </View>
+        {showRepoName &&
+                <View style={styles.buttonContainer}>
+                    <Button title="View Repository"><Text>View Repository</Text></Button>
+                    <Button color="darkred" title="Delete Review"><Text>Delete Review</Text></Button>
+                </View>
+            }
     </View>
   );
 }

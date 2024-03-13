@@ -27,7 +27,7 @@ const SingleRepoView = () => {
     return (
       <FlatList
         data={data.repository.reviews.edges}
-        renderItem={({ item }) => <ReviewItem review={item.node} />}
+        renderItem={({ item }) => <ReviewItem review={item.node} showRepoName={false}/>}
         keyExtractor={({ id }) => id}
         ListHeaderComponent={() => <RepositoryItem repository={data.repository} singleRepoView={true}/>}
       />

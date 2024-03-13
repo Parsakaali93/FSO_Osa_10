@@ -52,7 +52,9 @@ const AppBar = () => {
           {!isUserSignedIn && <Pressable><Link to="/signin"><Text style={styles.navButton}>Sign In</Text></Link></Pressable>}
           {!isUserSignedIn && <Pressable><Link to="/register"><Text style={styles.navButton}>Register</Text></Link></Pressable>}
           {isUserSignedIn && <Pressable onPress={signOut}><Text style={styles.navButton}>Sign Out</Text></Pressable>}
+          {isUserSignedIn && <Pressable><Link to="/myreviews"><Text style={styles.navButton}>My Reviews</Text></Link></Pressable>}
           {isUserSignedIn && <Pressable><Link to="/review"><Text style={styles.navButton}>Review</Text></Link></Pressable>}
+
     </ScrollView>
   </View>
   

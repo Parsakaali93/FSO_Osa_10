@@ -89,7 +89,6 @@ const RepositoryItem = ({repository, singleRepoView}) => {
   };
 
 
-  console.log("repoid", repository.id)
   const renderContent = () => {
     return (
       <View testID='repositoryItem' style={{backgroundColor:"white", padding: 20}}>

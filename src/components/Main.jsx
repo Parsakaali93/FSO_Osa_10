@@ -9,6 +9,7 @@ import { GET_REPOSITORIES } from '../graphql/queries';
 import SingleRepoView from './SingleRepoView';
 import ReviewForm from './ReviewForm';
 import RegisterForm from './RegisterForm';
+import MyReviews from './MyReviews';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,25 +20,18 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
-  const { data, error, loading } = useQuery(GET_REPOSITORIES, {fetchPolicy: 'network-only' });
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error fetching repositories: {error.message}</Text>;
-  if (!data || !data.repositories || !data.repositories.edges) {
-    return <Text>No data found</Text>;
-  }
-
-  const repositories = data.repositories.edges.map(e => e.node);
 
   return (
     <View style={styles.container}>
       <AppBar />
       <Routes>
-           <Route path="/" element={<RepositoryList repositories={repositories} />} />
+           <Route path="/" element={<RepositoryList />} />
            <Route path="/signin" element={<SignIn />} />
            <Route path="/register" element={<RegisterForm />} />
            <Route path="/repos/:id" element={<SingleRepoView />} />
            <Route path="/review" element={<ReviewForm />} />
+           <Route path="/myreviews" element={<MyReviews />} />
            {/*The last Route inside the Routes is for catching paths that don't match
            any previously defined path. In this case, we want to navigate to the home view.*/}
            <Route path="*" element={<Navigate to="/" replace />} />
