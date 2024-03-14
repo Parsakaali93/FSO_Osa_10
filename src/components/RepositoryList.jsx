@@ -2,7 +2,7 @@ import { FlatList, View, StyleSheet, Text, TextInput } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 // import useRepositories from '../hooks/useRepositories';
 import { Picker } from '@react-native-picker/picker';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import { useDebounce } from 'use-debounce';
@@ -17,10 +17,18 @@ const styles = StyleSheet.create({
 });
 
 const SortSelector = ({onChange, order, filter, onFilterChange}) => {
+  const textInputRef = useRef(null);
+
+  useEffect(() => {
+    if (textInputRef.current && filter != '') {
+      textInputRef.current.focus();
+    }
+  }, [filter]); 
+
   return (
     <View style={styles.sortSelector}>
       <View style={{display: "flex", alignItems: "center", marginVertical: 20}}>
-        <TextInput onChangeText={onFilterChange} placeholder='Filter Repositories' value={filter} style={{borderRadius: 10, padding:10, height: 50, backgroundColor:"white", width: "90%"}}>
+        <TextInput ref={textInputRef} onChangeText={onFilterChange} placeholder='Filter Repositories' value={filter} style={{borderRadius: 10, padding:10, height: 50, backgroundColor:"white", width: "90%"}}>
         </TextInput>
       </View>
 
@@ -70,7 +78,7 @@ const RepositoryList = () => {
 
   const { data, error, loading } = useQuery(GET_REPOSITORIES, {variables: { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }, fetchPolicy: 'network-only' });
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <View style={{backgroundColor:"#aff4fe"}}></View>;
   if (error) return <Text>Error fetching repositories: {error.message}</Text>;
   if (!data || !data.repositories || !data.repositories.edges) {
     return <Text>No data found</Text>;

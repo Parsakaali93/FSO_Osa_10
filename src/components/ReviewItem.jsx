@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import Text from './Text';
-import { Button } from 'react-native';
+import { Button, Alert } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { DELETE_REVIEW } from '../graphql/mutations';
 import { useMutation } from '@apollo/client';
@@ -90,6 +90,18 @@ const ReviewItem = ({review, showRepoName}) => {
         navigate(`/repos/${review.repository.id}`)
     }
 
+    const createTwoButtonAlert = () =>
+    Alert.alert('Delete Review', 'Are you sure you want to delete this review?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+
+      {text: 'Yes', onPress: () => DeleteRepo()},
+    ]);
+
+
     const DeleteRepo = async () => {
         const response = await mutate({ variables: {
             id: review.id
@@ -117,7 +129,7 @@ const ReviewItem = ({review, showRepoName}) => {
         {showRepoName &&
                 <View style={styles.buttonContainer}>
                     <Button onPress={NavigateToRepo} title="View Repository"><Text>View Repository</Text></Button>
-                    <Button onPress={DeleteRepo} color="darkred" title="Delete Review"><Text>Delete Review</Text></Button>
+                    <Button onPress={createTwoButtonAlert} color="darkred" title="Delete Review"><Text>Delete Review</Text></Button>
                 </View>
             }
     </View>
