@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import { useDebounce } from 'use-debounce';
+import useRepositories from '../hooks/useRepositories';
 
 const styles = StyleSheet.create({
   separator: {
@@ -76,21 +77,34 @@ const RepositoryList = () => {
        setFilter(itemValue);
   };
 
-  const { data, error, loading } = useQuery(GET_REPOSITORIES, {variables: { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }, fetchPolicy: 'network-only' });
+  // { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }
+  //const { data, error, loading } = useQuery(GET_REPOSITORIES, {variables: { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }, fetchPolicy: 'network-only' });
+  const { repositories, fetchMore, loading } = useRepositories({
+    first: 8,
+    searchKeyword: filterDebounced,
+    orderBy: selectedOrder.criteria,
+    orderDirection: selectedOrder.direction
+  });
 
   if (loading) return <View style={{backgroundColor:"#aff4fe"}}></View>;
-  if (error) return <Text>Error fetching repositories: {error.message}</Text>;
-  if (!data || !data.repositories || !data.repositories.edges) {
+  if (!repositories) {
     return <Text>No data found</Text>;
   }
 
-  const repositories = data.repositories.edges.map(e => e.node);
+  // const repositories = data.repositories.edges.map(e => e.node);
+  const repos = repositories.edges.map(e => e.node);
+  const onEndReach = () => {
+    fetchMore();
+  };
+
 
   return (
     <FlatList style={{backgroundColor:"#aff4fe"}}
-      data={repositories}
+      data={repos}
       ListHeaderComponent={<SortSelector onFilterChange={handleFilterChange} filter={filter} onChange={handleOrderChange} order={selectedOrder}/>}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
       renderItem={({item}) => <RepositoryItem repository={item} singleRepoView={false} />}
     />
   );

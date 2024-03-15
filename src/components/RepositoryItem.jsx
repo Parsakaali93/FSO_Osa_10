@@ -84,7 +84,6 @@ export function formatNumber(number) {
 const RepositoryItem = ({repository, singleRepoView}) => {
   
   const handlePress = async () => {
-    console.log(repository.url)
     // Open the GitHub page using Expo Linking
     await Linking.openURL(repository.url);
   };

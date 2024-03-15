@@ -84,7 +84,6 @@ const ReviewForm = () => {
       },
       refetchQueries: [{ query: GET_REPOSITORIES }]
     });
-    console.log(response);
     navigate(`/repos/${response.data.createReview.repositoryId}`)
   }
 
