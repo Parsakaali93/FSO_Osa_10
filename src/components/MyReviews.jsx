@@ -13,10 +13,13 @@ const MyReviews = () => {
     const reviews = data.me.reviews.edges;
     
     return (
-      <FlatList
-        data={reviews}
-        renderItem={({ item }) => <ReviewItem review={item.node} showRepoName={true}/>}
-     />
+      <>
+        <Text>rsfsdf</Text>
+        <FlatList
+          data={reviews}
+          renderItem={({ item }) => <ReviewItem review={item.node} showRepoName={true}/>}
+        />
+     </>
     );
     
 }; 

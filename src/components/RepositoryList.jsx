@@ -3,8 +3,6 @@ import RepositoryItem from './RepositoryItem';
 // import useRepositories from '../hooks/useRepositories';
 import { Picker } from '@react-native-picker/picker';
 import { useState, useRef, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_REPOSITORIES } from '../graphql/queries';
 import { useDebounce } from 'use-debounce';
 import useRepositories from '../hooks/useRepositories';
 
@@ -52,7 +50,7 @@ const SortSelector = ({onChange, order, filter, onFilterChange}) => {
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
-  const [selectedOrder, setSelectedOrder] = useState({pickerDisplay: "Latest Repositories"});
+  const [selectedOrder, setSelectedOrder] = useState({criteria: "CREATED_AT", direction: "DESC", pickerDisplay: "latest"});
   const [filter, setFilter] = useState("");
   const [filterDebounced] = useDebounce(filter, 800);
 
@@ -79,6 +77,7 @@ const RepositoryList = () => {
 
   // { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }
   //const { data, error, loading } = useQuery(GET_REPOSITORIES, {variables: { searchKeyword: filterDebounced, orderBy: selectedOrder.criteria, orderDirection: selectedOrder.direction }, fetchPolicy: 'network-only' });
+  
   const { repositories, fetchMore, loading } = useRepositories({
     first: 8,
     searchKeyword: filterDebounced,
